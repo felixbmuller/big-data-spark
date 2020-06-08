@@ -43,6 +43,9 @@ public class UserClicks {
 		// This file contains all the (artist, count) pairs
 		artistCount.saveAsTextFile("resources/artistcount.txt");
 
+		// This should print 11 (Occurences of Mark Knopfler alone)
+		// Inspecting the file there is also 1 additional entry: (Mark Knopfler & Emmylou Harris, 1)
+		// So in total he appears 12 times
 		System.out.println("Count of Mark Knopfler is: " + artistCount.lookup("Mark Knopfler").toString());
 		
 		context.close();
