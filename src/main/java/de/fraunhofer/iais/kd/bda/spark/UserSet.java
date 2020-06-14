@@ -2,8 +2,9 @@ package de.fraunhofer.iais.kd.bda.spark;
 
 import java.util.HashSet;
 
-public class UserSet {
+public class UserSet implements java.io.Serializable {
 	
+	private static final long serialVersionUID = 1071220102447838906L;
 	private HashSet<String> userset;
 	
 	public UserSet() {
@@ -47,7 +48,11 @@ public class UserSet {
 			
 		}
 		
-		distance = intersection_size / union_size;
+		if(union_size == 0)
+			return 1.0; // two empty sets
+			
+		
+		distance = 1.0 - intersection_size / union_size;
 				
 		return distance;
 	}
