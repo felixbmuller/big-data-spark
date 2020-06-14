@@ -14,6 +14,9 @@ public class SparkUserSet {
 	public static void main(String[] args) {
 	//	String inputFile= "/home/livlab/data/last-fm-sample1000000.tsv";
 		
+		// This is something I personally have to set such that spark works for me
+		//System.setProperty("hadoop.home.dir", "A:\\Max-Kubuntu\\Informatik\\eclipse\\winutil");
+		
 		String inputFile= "resources/last-fm-sample100000.tsv";
 		String appName = "UserSet";
 	
@@ -47,7 +50,38 @@ public class SparkUserSet {
 		System.out.println(aggregatedUsers.count());
 		aggregatedUsers.saveAsTextFile("resources/user_set_last_fm.txt");
 		context.close();
+		
+		
+		/* Task 4 sheet 6 */
+		
+		inputFile = "resources/user_set_last_fm.txt";
+		appName = "UserMinHash";
 
+		conf = new SparkConf().setAppName(appName).setMaster("local[*]");
+		context = new JavaSparkContext(conf);
+		
+		input = context.textFile(inputFile);
+		
+		JavaPairRDD<String, UserSet> art2user = input.mapToPair(line -> {
+			String[] parts = line.split(",");
+			String[] users = parts[1].split(",");
+			
+			UserSet us = new UserSet();
+			for (String user : users)
+				us.add(user.trim());
+			
+			return new Tuple2<String, UserSet>(parts[0], us);
+		});
+		
+		JavaPairRDD<String, String> art2minhash = art2user.mapToPair(artistUsersetPair -> {
+			return new Tuple2<String, String>(artistUsersetPair._1, artistUsersetPair._2.toMinHashSignature());
+		});
+		
+		art2minhash.saveAsTextFile("resources/artist_to_minhashes.txt");
+		context.close();
+		
+		
+	
 	}
 	
 	/**

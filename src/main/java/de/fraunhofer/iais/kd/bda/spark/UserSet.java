@@ -1,12 +1,14 @@
 package de.fraunhofer.iais.kd.bda.spark;
 
 import java.util.HashSet;
+import java.util.Arrays;
 
 public class UserSet {
 	
 	private HashSet<String> userset;
 	
 	public UserSet() {
+		
 	    userset = new HashSet<String>();
 	}
 	
@@ -52,6 +54,31 @@ public class UserSet {
 		return distance;
 	}
 	
+	// This computes the column of the sketch matrix corresponding to one artist
+	public String toMinHashSignature() {
+		
+		final int NUM_HASHFUNCTIONS = 20;
+		
+		String minHashes = "";
+		long min, hash;
+		for (int i = 0; i < NUM_HASHFUNCTIONS; i++) {
+			
+			min = Long.MAX_VALUE;
+			for (String username : this.userset) {
+
+				// Compute hash for all username, save minimum hash
+				hash = Basic.hash(i, username);
+				if (hash < min) {
+					min = hash;
+				}
+			}
+			
+			minHashes += min + (i < 19 ? ", " : ""); // Add minimum hash to return string
+		}
+
+		return minHashes;
+	}
+	
 	
 	public static void main(String[] args) {
 		UserSet userset_1 = new UserSet();
@@ -65,6 +92,7 @@ public class UserSet {
 		double distance = userset_1.distanceTo(userset_2);
 		
 		System.out.println(distance);
+		
 	}
 	
 	
