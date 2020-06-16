@@ -47,7 +47,6 @@ public class UserSet implements java.io.Serializable {
 			if(!userset.contains(username)) {
 				union_size++;
 			}
-			
 		}
 		
 		if(union_size == 0)
@@ -73,7 +72,7 @@ public class UserSet implements java.io.Serializable {
 
 				// Compute hash for all username, save minimum hash
 				hash = Basic.hash(i, username);
-				if (hash < min) {
+				if (hash <= min) {
 					min = hash;
 				}
 			}

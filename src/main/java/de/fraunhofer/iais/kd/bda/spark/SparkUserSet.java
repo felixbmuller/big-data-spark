@@ -15,7 +15,7 @@ public class SparkUserSet {
 	//	String inputFile= "/home/livlab/data/last-fm-sample1000000.tsv";
 		
 		// This is something I personally have to set such that spark works for me
-		//System.setProperty("hadoop.home.dir", "A:\\Max-Kubuntu\\Informatik\\eclipse\\winutil");
+		//System.setProperty("hadoop.home.dir", "path_to\\winutil");
 		
 		String inputFile= "resources/last-fm-sample100000.tsv";
 		String appName = "UserSet";
@@ -77,6 +77,7 @@ public class SparkUserSet {
 			return new Tuple2<String, String>(artistUsersetPair._1, artistUsersetPair._2.toMinHashSignature());
 		});
 		
+		// Minhash of Mark Knopfler: 665, 967, 554, 143, 326, 922, 90, 686, 863, 625, 222, 993, 165, 759, 944, 704, 468, 57, 828, 0
 		art2minhash.saveAsTextFile("resources/artist_to_minhashes.txt");
 		context.close();
 		
