@@ -48,6 +48,10 @@ class Basic
   	}
   	return true;
   }
+  
+  static int size() {
+	  return 20;
+  }
 
 
 }
